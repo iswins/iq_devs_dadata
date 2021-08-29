@@ -9,6 +9,7 @@ namespace App\Controllers;
 
 use App\Factories\DataClientFactory;
 use Luracast\Restler\RestException;
+use Exception;
 
 class CompanyController
 {
@@ -29,9 +30,10 @@ class CompanyController
             $company = $client->getCompanyByInn($inn);
             return [
                 'inn' => $company->getInn(),
-                'name' => $company->getName()
+                'name' => $company->getName(),
+                'is_operating' => $company->isOperating(),
             ];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new RestException(404, $e->getMessage());
         }
     }

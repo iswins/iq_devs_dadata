@@ -10,12 +10,17 @@ namespace App\Models;
 interface DataCompanyInterface
 {
     /**
-     * @return string
+     * @return string|null
      */
-    public function getInn();
+    public function getInn() : string|null;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName();
+    public function getName() : string|null;
+
+    /**
+     * @return bool
+     */
+    public function isOperating() : bool;
 }
