@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+
+    #PHP Service
+    iq_devs_dadata_fpm:
+        build:
+            context: ./php
+            dockerfile: ./Dockerfile
+        image: digitalocean.com/php
+        container_name: iq_devs_dadata_fpm
+        restart: unless-stopped
+        tty: true
+        env_file:
+            - ../.env
+        working_dir: /var/www
+        volumes:
+            - ../:/var/www
+        networks:
+            - iq_devs_dadata-network
+
+    #Nginx Service
+    iq_devs_dadata:
+        image: nginx:alpine
+        container_name: iq_devs_dadata
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "7082:80"
+        volumes:
+            - ../:/var/www
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - iq_devs_dadata-network
+
+    #Redis Service
+    iq_devs_dadata_redis:
+        image: redis:alpine
+        container_name: iq_devs_dadata_redis
+        restart: unless-stopped
+        tty: true
+        volumes:
+            - dbdata:/data
+        networks:
+            - iq_devs_dadata-network
+
+#Docker Networks
+networks:
+    iq_devs_dadata-network:
+        driver: bridge
+#Volumes
+volumes:
+    dbdata:
+        driver: local

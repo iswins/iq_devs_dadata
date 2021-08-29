@@ -1,0 +1,12 @@
+{
+    "name": "iq_devs/dadata",
+    "require": {
+        "luracast/restler": "^5.0",
+        "hflabs/dadata": "^20.12"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    }
+}
