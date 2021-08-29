@@ -13,6 +13,8 @@ use App\Exceptions\ServiceException;
 use App\Models\DaDataCompany;
 use App\Models\DataCompanyInterface;
 use Dadata\DadataClient as RawClient;
+use Closure;
+use Exception;
 
 class DaDataClient implements DataClientInterface
 {
@@ -77,7 +79,7 @@ class DaDataClient implements DataClientInterface
         );
     }
 
-    protected function query($cacheKey, \Closure $query) {
+    protected function query($cacheKey, Closure $query) {
         if ($result = $this->getFromCache($cacheKey)) {
             return $result;
         }
@@ -96,7 +98,11 @@ class DaDataClient implements DataClientInterface
             throw new ServiceException("Cache driver isn't set");
         }
 
-        return $this->getCacheDriver()->get($cacheKey);
+        try {
+            return $this->getCacheDriver()->get($cacheKey);
+        } catch (Exception $e) {
+            return null;
+        }
     }
 
     protected function setCache($key, $data) : static {
