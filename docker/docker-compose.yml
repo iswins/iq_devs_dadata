@@ -16,7 +16,7 @@ services:
         volumes:
             - ../:/var/www
         extra_hosts:
-            "host.docker.internal":"host-gateway"
+            - "host.docker.internal:host-gateway"
         networks:
             - iq_devs_dadata-network
 
